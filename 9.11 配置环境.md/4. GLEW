@@ -1,0 +1,105 @@
+4. GLEW
+  4.1 GLEW 的作用
+    定义：GLEW（OpenGL Extension Wrangler Library）是一个 OpenGL 函数与扩展加载库。
+    主要功能：
+      获取现代 OpenGL 函数的入口地址
+      管理 OpenGL 扩展
+      判断当前显卡驱动支持哪些 OpenGL 功能
+      让程序可以直接调用现代 OpenGL API
+  4.2 GLEW 配置
+  -----------------------------------------
+    项目架构
+    CG!\
+    ├─ Include\
+    │  └─ GL\
+    │     ├─ glew.h
+    │     ├─ wglew.h
+    │     └─ glxew.h
+    │
+    ├─ Lib\
+    │  └─ glew32.lib
+    │
+    ├─ Dll\
+    │  └─ glew32.dll
+    │
+    └─ CG!\
+       └─ main.cpp
+  --------------------------------------------
+    4.2.1 配置头文件
+    Visual Studio：
+    项目属性
+    → C/C++
+    → 常规
+    → 附加包含目录
+    
+    添加：
+    ..\Include
+  ----------------------------------------------
+    代码中：
+    #include <GL/glew.h>
+    并且 GLEW 应放在 GLFW 前：
+    #include <GL/glew.h>
+    #include <GLFW/glfw3.h>
+  -----------------------------------------------
+    4.2.2 配置库目录
+    项目属性
+    → 链接器
+    → 常规
+    → 附加库目录
+    
+    添加：
+    
+    ..\Lib
+    ③ 配置链接库
+    项目属性
+    → 链接器
+    → 输入
+    → 附加依赖项
+    
+    加入：
+    
+    glew32.lib
+    
+    完整项目中通常已有：
+    
+    glfw3.lib
+    glew32.lib
+    opengl32.lib
+    
+    其中：
+    
+    glew32.lib
+    → GLEW 动态库的导入库
+    
+    glew32.dll
+    → GLEW 运行时真正需要加载的动态库
+    
+    因此：
+    
+    .lib → 链接阶段
+    .dll → 运行阶段
+    ④ 配置 DLL 搜索路径
+    
+    按照老师要求：
+    
+    项目属性
+    → 调试
+    → 环境
+    
+    配置：
+    
+    PATH=$PATH$;..\Dll
+    
+    作用：
+    
+    $PATH$
+    → 保留系统原有 PATH
+    
+    ..\Dll
+    → 将项目中的 Dll 文件夹加入程序运行时的 DLL 搜索路径
+    
+    因此无需将：
+    
+    glew32.dll
+    
+    手动复制到 .exe 所在目录。
