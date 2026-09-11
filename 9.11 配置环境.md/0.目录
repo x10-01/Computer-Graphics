@@ -16,12 +16,4 @@
   4.2 GLEW 配置
   4.3 GLEW 与 OpenGL Context
   4.4 wglGetProcAddress
-5. OpenGL 最小程序
-6. Render Loop
-7. Front Buffer / Back Buffer
-  7.1 Double Buffering
-  7.2 glfwSwapBuffers
-  7.3 VSync
-8. 常见错误与排查
-9. 每节课学习记录
-10. TODO
+5. 每节课学习记录
