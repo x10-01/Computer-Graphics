@@ -1,8 +1,67 @@
 1. OpenGL程序初始化与代码规范
   1.1 GLFW初始化
-  1.2 OpenGL Context版本与Core Profile设置
+    glfwInit() 用于初始化 GLFW 库及其内部资源
+-----------------------------------------------
+    if (!glfwInit())
+{
+    return -1;
+}
+-----------------------------------------------
+ 
+1.2 OpenGL Context版本与Core Profile设置
+    在创建窗口之前，需要先指定希望 GLFW 创建的 OpenGL Context 类型：
+    glfwWindowHint() 是对即将创建的窗口和 OpenGL Context提出要求
+-----------------------------------------------
+glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+------------------------------------------------
+    分别表示OpenGL主版本为3、次版本为3、使用core profile
+    若使用macOS，还需添加
+    #ifdef __APPLE__
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    #endif
+
   1.3 Window与OpenGL Context创建顺序
+    完成 Context 参数设置后，再创建窗口：
+------------------------------------------------
+  GLFWwindow* window =
+    glfwCreateWindow(640, 480, "B24070408", NULL, NULL);
+if (!window)//创建失败时
+{
+    glfwTerminate();
+    return -1;
+}
+glfwTerminate();//释放 GLFW 已初始化的资源
+--------------------------------------------------
+    
   1.4 glfwMakeContextCurrent()
+    将 window 对应的 OpenGL Context 设置为当前线程正在使用的 Context
+    这一步非常重要，因为后面的 GLEW 初始化依赖一个已经存在并且处于 Current 状态的 OpenGL Context
+--------------------------------------------------
+glfwMakeContextCurrent(window);
+--------------------------------------------------
+
   1.5 GLEW初始化
+    GLFW先建立OpenGL运行环境，GLEW再基于该环境加载OpenGL函数
+---------------------------------------------------
+if (GLEW_OK != glewInit())
+{
+    std::cout << "GLEW init fails!" << std::endl;
+    glfwTerminate();//若GLEW初始化失败则释放GLFW资源
+    exit(-1);//终止整个程序
+}
+----------------------------------------------------
+
   1.6 std命名空间规范
+    课程中强调：标准库成员尽量写完整命名空间，不建议直接使用using namespace std;
+    完整命名空间：
+-----------------------------------------------------
+std::cout << "GLEW init fails!" << std::endl;
+-----------------------------------------------------
+    作为C++标准库命名空间，std:: 表示该成员来自namespace std
+    标准库命名更适合大型工程维护，避免不同库之间的命名冲突
+
   1.7 Visual Studio逻辑视图与项目属性
+在 Visual Studio 中进行 C/C++ 项目配置时，应使用解决方案逻辑视图（Solution View）
+而不是只打开文件夹视图（Folder View）
