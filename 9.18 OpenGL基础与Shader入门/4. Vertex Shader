@@ -1,0 +1,33 @@
+4. Vertex Shader
+  4.1 #version 330 core
+    用于声明当前 Shader 使用的 GLSL 版本和 Profile
+    与前面 GLFW 中的配置对应（OpenGL 3.3 Core Profile → GLSL 3.30 Core）
+    #version 一般写在 Shader 源码开头，用于告诉 OpenGL 驱动
+
+  4.2 layout(location = 0)
+    location = 0 表示 position 从编号为 0 的 Vertex Attribute（顶点属性）中获取数据
+    本质是在确定Shader 的这个输入变量从哪一个顶点属性通道读取数据
+
+  4.3 in vec3 position
+    表示 Vertex Shader 每处理一个顶点时，会得到一个三维位置
+
+  4.4 Vertex Shader输入数据来源
+    顶点输入数据有两种来源：
+    1.CPU内存 
+    程序最开始通常在 CPU 端定义数据
+    2.GPU显存
+    但是现代 OpenGL 通常会进一步将这些顶点数据上传到 GPU 的 Buffer 中
+
+  4.5 gl_Position
+    是OpenGL / GLSL 规定的 Vertex Shader 内置输出变量
+
+  4.6 vec3到vec4与齐次坐标
+    gl_Position 按照 GLSL/OpenGL 规范是 vec4
+    所以代码中
+    position(x, y, z)
+        ↓
+    vec4(position, 1.0)
+        ↓
+    (x, y, z, 1)
+    这里的第四个分量属于齐次坐标
+    图形学中通常(x, y, z, w)用于平移、旋转、缩放、投影
