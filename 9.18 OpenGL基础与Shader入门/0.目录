@@ -1,1 +1,8 @@
-
+1. OpenGL程序初始化与代码规范
+2. Render Loop、颜色与Double Buffering
+3. Shader与可编程渲染流程
+4. Vertex Shader
+5. Fragment Shader
+6. Shader创建、编译与错误检查
+7. 课堂注意点与易错点
+8. 截至本节课的完整代码
