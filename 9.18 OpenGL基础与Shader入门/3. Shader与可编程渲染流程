@@ -1,1 +1,55 @@
+3. Shader与可编程渲染流程
+  3.1 Shader是什么
+    Shader着色器可以理解为运行在 GPU 上的小程序，用于控制图形渲染过程中的特定阶段。
 
+  3.2 Vertex Shader → Rasterization → Fragment Shader
+    Vertex Shader → 处理顶点
+    Fragment Shader → 处理光栅化后产生的 Fragment，并决定其输出颜色
+    普通C++代码通常由CPU执行，而Shader则主要由GPU执行
+    【Vertex Shader → Rasterization → Fragment Shader】是最小渲染流程
+      3.2.1 Vertex Shader 
+        Vertex Shader（顶点着色器）负责逐顶点处理输入的顶点数据
+        常见输入包括位置position、颜色color、法向量normal、纹理坐标texture coordinate
+        当前课程代码中只使用了in vec3 position;即输入三维顶点位置(x, y, z)
+        Vertex Shader 最终输出gl_Position
+      3.2.2 Rasterization
+        Rasterization（光栅化）用于根据这三个顶点覆盖的区域确定这个三角形会影响哪些屏幕位置
+        即将几何图元转换为片段集合
+      3.3.3 Fragment Shader
+        Fragment Shader在这可以理解为决定像素颜色
+
+  3.3 GLSL与C++的关系
+-------------------------------------------
+    glfwInit();
+    glfwCreateWindow(...);
+    glewInit();
+    glCreateShader(...);
+    这些是运行在CPU端的C++代码
+-------------------------------------------
+#version 330 core
+
+layout(location = 0) in vec3 position;
+
+void main()
+{
+    gl_Position = vec4(position, 1.0f);
+}
+GLSL（OpenGL Shading Language）即 OpenGL Shader 使用的语言
+这些是准备交给OpenGL驱动编译并最终在GPU上运行的Shader代码
+---------------------------------------------
+C++ → 负责组织、提交和控制
+GLSL → 负责GPU上的图形计算
+
+  3.4 Shader源码以字符串形式存储
+----------------------------------------------
+const GLchar* vertexShaderSource =
+"#version 330 core\n"
+"layout (location = 0) in vec3 position;\n"
+"void main()\n"
+"{\n"
+"gl_Position = vec4(position, 1.0f);\n"
+"}";
+------------------------------------------------
+外层 → C++字符串
+字符串内容 → GLSL源码
+写成字符串是因为后续要通过glShaderSource(...)把 Shader 源码交给 OpenGL
