@@ -48,13 +48,4 @@
   6.6 glGetShaderInfoLog()
   6.7 Shader编译错误处理
 
-7. 课堂注意点与易错点
-  7.1 GLEW必须在GLFW头文件之前包含
-  7.2 WindowHint必须在创建Window前设置
-  7.3 OpenGL Context必须先设为Current再初始化GLEW
-  7.4 尽量显式使用std::
-  7.5 glClearColor只是设置清屏颜色
-  7.6 输入顶点维度与gl_Position输出维度的区别
-  7.7 当前Shader Program尚未完成链接和实际绘制
-
-8. 截至本节课的完整代码
+7. 截至本节课的完整代码
