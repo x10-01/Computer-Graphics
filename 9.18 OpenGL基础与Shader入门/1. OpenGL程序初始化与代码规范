@@ -1,1 +1,8 @@
-
+1. OpenGL程序初始化与代码规范
+  1.1 GLFW初始化
+  1.2 OpenGL Context版本与Core Profile设置
+  1.3 Window与OpenGL Context创建顺序
+  1.4 glfwMakeContextCurrent()
+  1.5 GLEW初始化
+  1.6 std命名空间规范
+  1.7 Visual Studio逻辑视图与项目属性
