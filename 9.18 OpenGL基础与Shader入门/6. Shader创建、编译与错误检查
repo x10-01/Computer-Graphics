@@ -1,7 +1,93 @@
+6. Shader创建、编译与错误检查
   6.1 glCreateShader()
+    用于创建一个 Shader 对象，并返回该对象的编号
+    -----------------------------------
+    GLuint vertexShader =
+        glCreateShader(GL_VERTEX_SHADER);
+    -----------------------------------
+    GL_VERTEX_SHADER表示创建的是Vertex Shader
+    返回值GLuint可以理解为OpenGL对象ID
+    因此vertexShader并不是 Shader 源码本身，而是OpenGL 内部 Shader 对象的编号
+
   6.2 glShaderSource()
-  6.3 glCompileShader()
+    用于将 GLSL Shader 源码交给刚刚创建的 Shader 对象
+    ------------------------------------
+    glShaderSource(
+        vertexShader,
+        1,
+        &vertexShaderSource,
+        NULL
+    );
+    -------------------------------------
+    vertexShader → 目标Shader对象
+    1 → 传入的Shader源码字符串数量
+    &vertexShaderSource → Shader源码字符串地址
+    NULL → 不另外指定每个字符串的长度
+    
+      6.3 glCompileShader()
+    用于请求 OpenGL 编译指定的 Shader 源码
+    --------------------------------------
+    glCompileShader(vertexShader);
+    --------------------------------------
+    注意GLSL Shader 不是由 Visual Studio 的 C++ 编译器直接编译，而是在程序运行过程中交给 OpenGL 驱动编译
+
   6.4 glGetShaderiv()
+    yongyu查询 Shader 对象的某项状态
+    -------------------------------------
+    GLint success;
+    
+    glGetShaderiv(
+        vertexShader,
+        GL_COMPILE_STATUS,
+        &success
+    );
+    --------------------------------------
+
   6.5 GL_COMPILE_STATUS
+    用于查询 Shader 的编译状态，一般success != 0表示编译成功，success == 0表示编译失败
+    --------------------------------------
+    if (!success)
+    {
+        ...
+    }
+    ---------------------------------------
+    表示如果 Shader 编译失败，则进入错误处理
+
   6.6 glGetShaderInfoLog()
+    用于获取 Shader 编译日志
+    ---------------------------------------
+    GLchar infoLog[1024];
+    
+    glGetShaderInfoLog(
+        vertexShader,
+        1024,
+        NULL,
+        infoLog
+    );
+    ---------------------------------------
+    vertexShader → 哪个Shader
+    1024 → infoLog缓冲区最大长度
+    NULL → 不关心实际写入多少字符
+    infoLog → 保存错误信息
+    最后将错误信息输出到控制台
+    ---------------------------------------
+    std::cout
+        << "ERROR::SHADER::VERTEX::COMPILATION_FAIL\n"
+        << infoLog
+        << std::endl;
+    ----------------------------------------
+
   6.7 Shader编译错误处理
+    编译Shader
+        ↓
+    查询GL_COMPILE_STATUS
+        ↓
+    是否成功？
+       / \
+     是   否
+     ↓     ↓
+    继续   glGetShaderInfoLog()
+           ↓
+         打印错误
+           ↓
+         结束程序
