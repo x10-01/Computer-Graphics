@@ -1,1 +1,58 @@
+2. Render Loop、颜色与Double Buffering
+  2.1 Render Loop基本结构
+-------------------------------------------
+while (!glfwWindowShouldClose(window))
+{
+    /* Render here */
+    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
 
+    /* Swap front and back buffers */
+    glfwSwapBuffers(window);
+
+    /* Poll for and process events */
+    glfwPollEvents();
+}
+-------------------------------------------
+
+  2.2 glClearColor()
+    glClearColor() 用于设置之后执行颜色缓冲清除操作时使用的颜色（只是设置“清屏颜色”，本身不会立即改变画面）
+    函数形式为glClearColor(R, G, B, A);（A代表透明度）
+
+  2.3 RGBA颜色表示
+    RGBA每条通道通常由8bit整数表示，因此数值范围为0~255
+    但是OpenGL中glClearColor() 使用的是归一化浮点值，即0.0 ~ 1.0
+    OpenGL浮点值 = 8bit整数值 / 255
+
+  2.4 glClear()
+    按照之前通过 glClearColor() 设置的颜色清除当前颜色缓冲区
+    glClearColor() → 设置清屏颜色
+    glClear() → 真正执行清屏
+
+  2.5 Front Buffer与Back Buffer
+    图形程序通常不会直接在正在显示的画面上进行绘制，而是使用两个缓冲区：Front Buffer与Back Buffer
+    Front Buffer → 当前正在用于显示的完整画面 → 用户当前看到的内容
+    Back Buffer → 后台准备下一帧图像 → 用户当前看不到
+    可以理解为：
+   【显示器】正在读取【Front Buffer】同时【GPU】在【Back Buffer】中绘制下一帧
+
+  2.6 Double Buffering
+    将使用 Front Buffer 和 Back Buffer 的机制称为Double Buffering（双缓冲）
+    ----------------------------------------------
+    第 N 帧正在显示
+            ↓
+    Front Buffer
+    同时：
+    GPU绘制第 N+1 帧
+            ↓
+    Back Buffer
+    ----------------------------------------------
+    可以避免显示未完成帧、减少画面闪烁、提高显示稳定性、让显示和下一帧绘制能够并行进行
+
+  2.7 glfwSwapBuffers()
+    将已经完成绘制的 Back Buffer 提交显示，使新的完整帧呈现出来
+    Back Buffer准备新帧 → 完成绘制 → glfwSwapBuffers() → 新帧显示
+    “Swap”在概念上表示前后缓冲角色交换
+
+  2.8 glfwPollEvents()
+    用于获取并处理窗口系统产生的事件
