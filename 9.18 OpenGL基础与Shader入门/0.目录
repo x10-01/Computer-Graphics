@@ -36,8 +36,6 @@
 5. Fragment Shader
   5.1 Fragment Shader的作用
   5.2 out vec4 FragColor
-  5.3 RGBA颜色输出
-  5.4 Fragment与Pixel的基本区别
 
 6. Shader创建、编译与错误检查
   6.1 glCreateShader()
