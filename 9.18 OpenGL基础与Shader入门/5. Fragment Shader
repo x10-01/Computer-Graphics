@@ -1,5 +1,9 @@
 5. Fragment Shader
   5.1 Fragment Shader的作用
+    Fragment Shader 的主要任务可以先理解为输入Fragment、计算颜色、输出颜色
+
   5.2 out vec4 FragColor
-  5.3 RGBA颜色输出
-  5.4 Fragment与Pixel的基本区别
+    Fragment Shader 最终输出一个四维颜色值
+    与Vertex Shader必须使用内置变量gl_Position不同
+    Fragment Shader可以自己定义颜色输出变量，如FragColor
+
